@@ -1,44 +1,45 @@
 "use client";
 
-import React from 'react';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { motion } from 'framer-motion';
-import Container from './Container';
+import React from "react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
-const Footer: React.FC = () => {
-  const socialLinks = [
-    { icon: <FaGithub />, href: 'https://github.com/sumetbuarod' },
-    { icon: <FaLinkedin />, href: 'https://linkedin.com/in/sumetbuarod' },
-    { icon: <FaTwitter />, href: '#' },
-  ];
-
+export default function Footer() {
   return (
-    <motion.footer 
-      className="py-6 mt-16"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: 1 }}
+    <footer
+      className="px-6 md:px-12 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+      style={{ borderTop: "1px solid var(--border)" }}
     >
-      <Container className="flex flex-col md:flex-row justify-between items-center">
-        <div className="flex space-x-4">
-          {socialLinks.map((link, index) => (
-            <motion.a
-              key={index}
-              href={link.href}
-              className="text-gray-400 hover:text-white"
-              whileHover={{ scale: 1.2, color: '#10B981' }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              {React.cloneElement(link.icon, { size: 24 })}
-            </motion.a>
-          ))}
-        </div>
-        <p className="text-gray-500 mt-4 md:mt-0">
-          © {new Date().getFullYear()} Sumet Buarod. All rights reserved.
-        </p>
-      </Container>
-    </motion.footer>
-  );
-};
+      <p
+        className="text-xs"
+        style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}
+      >
+        © {new Date().getFullYear()} Sumet Buarod
+      </p>
 
-export default Footer;
+      <div className="flex items-center gap-4">
+        <a
+          href="https://github.com/sumetbuarod"
+          target="_blank"
+          rel="noreferrer"
+          className="transition-colors duration-150"
+          style={{ color: "var(--text-4)" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "var(--text-2)")}
+          onMouseLeave={e => (e.currentTarget.style.color = "var(--text-4)")}
+        >
+          <FaGithub size={14} />
+        </a>
+        <a
+          href="https://linkedin.com/in/sumetbuarod"
+          target="_blank"
+          rel="noreferrer"
+          className="transition-colors duration-150"
+          style={{ color: "var(--text-4)" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "var(--text-2)")}
+          onMouseLeave={e => (e.currentTarget.style.color = "var(--text-4)")}
+        >
+          <FaLinkedin size={14} />
+        </a>
+      </div>
+    </footer>
+  );
+}

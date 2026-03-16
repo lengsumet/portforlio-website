@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useScrollAnimation, defaultVariants } from '@/hooks/useScrollAnimation';
 
 interface SectionHeaderProps {
   title: string;
@@ -10,18 +9,33 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle }) => {
-    const { controls, ref } = useScrollAnimation();
-
   return (
     <motion.div
-      ref={ref}
-      className="text-center mb-12"
-      variants={defaultVariants}
-      initial="hidden"
-      animate={controls}
+      className="mb-12"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
-      <h2 className="text-3xl md:text-4xl font-bold text-white">{title}</h2>
-      {subtitle && <p className="text-lg text-gray-400 mt-2">{subtitle}</p>}
+      <p
+        className="text-xs uppercase tracking-[0.18em] mb-3"
+        style={{ color: 'var(--text-4)', fontFamily: 'var(--font-body)' }}
+      >
+        {subtitle}
+      </p>
+      <h2
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontWeight: 400,
+          color: 'var(--text-1)',
+        }}
+      >
+        {title}
+      </h2>
+      <div
+        className="mt-4 h-px w-12"
+        style={{ backgroundColor: 'var(--accent)', opacity: 0.4 }}
+      />
     </motion.div>
   );
 };

@@ -108,17 +108,18 @@ const SkillIcons: React.FC<SkillIconsProps> = ({ skills }) => {
           >
             {/* Icon circle */}
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gray-800/80 border border-gray-700/50 group-hover:border-opacity-80 transition-all duration-200"
+              className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-200"
               style={{
-                boxShadow: `0 0 0 0 ${color}33`,
+                backgroundColor: "var(--bg-raised)",
+                border: `1px solid var(--border)`,
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 16px 4px ${color}40`;
-                (e.currentTarget as HTMLDivElement).style.borderColor = `${color}60`;
+                (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 14px 3px ${color}35`;
+                (e.currentTarget as HTMLDivElement).style.borderColor = `${color}55`;
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 0 0 ${color}33`;
-                (e.currentTarget as HTMLDivElement).style.borderColor = "";
+                (e.currentTarget as HTMLDivElement).style.boxShadow = "";
+                (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)";
               }}
             >
               <span className="text-2xl" style={{ color }}>
@@ -127,7 +128,10 @@ const SkillIcons: React.FC<SkillIconsProps> = ({ skills }) => {
             </div>
 
             {/* Skill name */}
-            <span className="text-xs text-gray-400 text-center max-w-[72px] leading-tight group-hover:text-gray-200 transition-colors line-clamp-2">
+            <span
+              className="text-xs text-center max-w-[72px] leading-tight line-clamp-2 transition-colors duration-150"
+              style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}
+            >
               {/* Shorten long names for display */}
               {skill.name
                 .replace(" (Web API, Microservices)", "")
@@ -144,7 +148,10 @@ const SkillIcons: React.FC<SkillIconsProps> = ({ skills }) => {
 
             {/* Level badge on hover */}
             {skill.level && (
-              <span className="opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-purple-400 transition-opacity">
+              <span
+                className="opacity-0 group-hover:opacity-100 text-[10px] font-medium transition-opacity"
+                style={{ color: "var(--accent-dim)", fontFamily: "var(--font-body)" }}
+              >
                 {skill.level}%
               </span>
             )}

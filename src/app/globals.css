@@ -1,189 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap');
+
 @import "tailwindcss";
 
-/* ── Dark Luxury / Editorial Theme ─────────────────── */
+/* ── Impeccable Design System ─────────────────────────
+   Tone: Editorial / Refined Minimalism
+   Palette: OKLCH tinted neutrals, warm-cool contrast
+   Typography: Fraunces (display) + DM Sans (body)
+   ─────────────────────────────────────────────────── */
+
 :root {
-  --background: #030712;
-  --surface: #111827;
-  --surface-hover: #1F2937;
-  --border: #374151;
-  --border-subtle: #1F2937;
-  --text-primary: #F9FAFB;
-  --text-muted: #9CA3AF;
-  --primary: #10B981;
-  --primary-glow: rgba(52, 211, 153, 0.25);
-  --accent: #8B5CF6;
-  --gold: #F59E0B;
-  --danger: #EF4444;
-  --font-heading: var(--font-playfair);
-  --font-body: var(--font-inter);
+  /* ── OKLCH Palette (tinted neutrals toward cool blue) ── */
+  --bg:          oklch(10% 0.012 250);   /* near-black, blue-tinted */
+  --bg-raised:   oklch(14% 0.012 250);   /* surface elevation 1 */
+  --bg-float:    oklch(18% 0.012 250);   /* surface elevation 2 */
+  --border:      oklch(25% 0.012 250);   /* subtle border */
+  --border-mid:  oklch(32% 0.012 250);   /* mid border */
+
+  /* ── Text ── */
+  --text-1:      oklch(96% 0.005 250);   /* primary — near-white, cool */
+  --text-2:      oklch(72% 0.008 250);   /* secondary */
+  --text-3:      oklch(48% 0.008 250);   /* muted */
+  --text-4:      oklch(34% 0.008 250);   /* very muted */
+
+  /* ── Accent: warm amber (contrast against cool bg) ── */
+  --accent:      oklch(78% 0.14 75);     /* warm amber */
+  --accent-dim:  oklch(65% 0.10 75);     /* dimmed amber */
+  --accent-bg:   oklch(78% 0.14 75 / 0.08);
+
+  /* ── Semantic ── */
+  --green:       oklch(72% 0.14 155);
+  --green-bg:    oklch(72% 0.14 155 / 0.08);
+  --red:         oklch(65% 0.18 25);
+
+  /* ── Typography ── */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+
+  /* ── Spacing (4pt base) ── */
+  --space-1:  0.25rem;   /* 4px */
+  --space-2:  0.5rem;    /* 8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-24: 6rem;      /* 96px */
+}
+
+/* ── Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--text-primary);
-  font-family: var(--font-body), system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Slightly more line-height for light text on dark bg */
 }
 
-/* ── Heading Font ────────────────────────────────────── */
-h1, h2, h3 {
-  font-family: var(--font-heading), Georgia, serif;
+/* ── Display Typography ───────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-1);
 }
 
-/* ── Glow Effects ────────────────────────────────────── */
-.glow-emerald {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 60px rgba(16, 185, 129, 0.1);
-}
-.glow-emerald-sm {
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
-}
-.glow-violet {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.1);
-}
-.glow-gold {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+/* Fluid type scale */
+h1 { font-size: clamp(2.5rem, 6vw + 1rem, 5rem); }
+h2 { font-size: clamp(1.75rem, 3vw + 0.5rem, 2.75rem); }
+h3 { font-size: clamp(1.25rem, 2vw + 0.25rem, 1.75rem); }
+
+/* ── Scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(40% 0.012 250); }
+
+/* ── Selection ────────────────────────────────────── */
+::selection {
+  background: var(--accent-bg);
+  color: var(--accent);
 }
 
-/* ── Gradient Text ───────────────────────────────────── */
-.text-gradient-emerald {
-  background: linear-gradient(135deg, #10B981, #8B5CF6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.text-gradient-gold {
-  background: linear-gradient(135deg, #F59E0B, #F97316);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ── Focus ────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
 }
 
-/* ── Luxury Card ─────────────────────────────────────── */
-.card-luxury {
-  background: #111827;
-  border: 1px solid #374151;
-  border-radius: 1rem;
-  transition: all 0.3s ease;
-}
-.card-luxury:hover {
-  border-color: rgba(16, 185, 129, 0.3);
-  box-shadow: 0 0 30px rgba(16, 185, 129, 0.08), 0 20px 40px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
+/* ── Utility: Tabular numbers for data ────────────── */
+.tabular { font-variant-numeric: tabular-nums; }
 
-/* ── Product Card ────────────────────────────────────── */
-.product-card {
-  background: #111827;
-  border: 1px solid #374151;
-  border-radius: 1rem;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-.product-card:hover {
-  border-color: rgba(16, 185, 129, 0.4);
-  box-shadow: 0 0 40px rgba(16, 185, 129, 0.12), 0 25px 50px rgba(0, 0, 0, 0.4);
-  transform: translateY(-4px) scale(1.01);
-}
-
-/* ── Badge Styles ────────────────────────────────────── */
-.badge-new {
-  background: rgba(16, 185, 129, 0.2);
-  color: #34D399;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 8px;
-  border-radius: 9999px;
-}
-.badge-sale {
-  background: rgba(239, 68, 68, 0.2);
-  color: #FCA5A5;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 8px;
-  border-radius: 9999px;
-}
-.badge-hot {
-  background: rgba(245, 158, 11, 0.2);
-  color: #FCD34D;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 8px;
-  border-radius: 9999px;
-}
-.badge-featured {
-  background: rgba(139, 92, 246, 0.2);
-  color: #C4B5FD;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 8px;
-  border-radius: 9999px;
-}
-
-/* ── Skeleton Loading ────────────────────────────────── */
-.skeleton-luxury {
-  background: linear-gradient(90deg, #1F2937 25%, #374151 50%, #1F2937 75%);
-  background-size: 200% 100%;
-  animation: skeleton-sweep 1.5s ease-in-out infinite;
-  border-radius: 0.75rem;
-}
-@keyframes skeleton-sweep {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ── Luxury Button ───────────────────────────────────── */
-.btn-luxury {
-  background: linear-gradient(135deg, #10B981, #059669);
-  color: white;
-  font-weight: 600;
-  border-radius: 0.75rem;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-.btn-luxury:hover {
-  box-shadow: 0 0 24px rgba(16, 185, 129, 0.4);
-  transform: translateY(-1px);
-}
-.btn-luxury::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-.btn-luxury:hover::after {
-  transform: translateX(100%);
-}
-
-/* ── Stat Cards ──────────────────────────────────────── */
-.stat-emerald { border-left: 3px solid #10B981; }
-.stat-violet  { border-left: 3px solid #8B5CF6; }
-.stat-gold    { border-left: 3px solid #F59E0B; }
-.stat-rose    { border-left: 3px solid #F43F5E; }
-.stat-sky     { border-left: 3px solid #0EA5E9; }
-
-/* ── Divider ─────────────────────────────────────────── */
-.divider-luxury {
+/* ── Divider ──────────────────────────────────────── */
+.divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #374151, transparent);
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
 }
-
-/* ── Scrollbar ───────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #030712; }
-::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #4B5563; }
 
 /* ── Cat Widget Animations ────────────────────────── */
 @keyframes cat-tail-lazy {
