@@ -1,41 +1,51 @@
 import React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { motion } from 'framer-motion';
+import { motion, type HTMLMotionProps } from 'framer-motion';
 
-const buttonVariants = cva(
-  'font-semibold rounded-lg shadow-md transition-all duration-300',
-  {
-    variants: {
-      variant: {
-        primary: 'bg-emerald-600 text-white hover:bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]',
-        secondary: 'bg-[#111827] border border-[#374151] text-white hover:border-emerald-500/30',
-      },
-      size: {
-        sm: 'px-4 py-2 text-sm',
-        md: 'px-6 py-3 text-base',
-        lg: 'px-8 py-4 text-lg',
-      },
-    },
-    defaultVariants: {
-      variant: 'primary',
-      size: 'md',
-    },
-  }
-);
+type Variant = 'primary' | 'secondary' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
 
-import { type HTMLMotionProps } from 'framer-motion';
+export interface ButtonProps extends HTMLMotionProps<'button'> {
+  variant?: Variant;
+  size?: Size;
+}
 
-// Combine motion props and CVA variants
-export type ButtonProps = HTMLMotionProps<'button'> & VariantProps<typeof buttonVariants>;
+const styles: Record<Variant, React.CSSProperties> = {
+  primary: {
+    backgroundColor: 'var(--accent)',
+    color: 'oklch(12% 0.012 250)',
+    border: 'none',
+  },
+  secondary: {
+    backgroundColor: 'transparent',
+    color: 'var(--text-2)',
+    border: '1px solid var(--border-mid)',
+  },
+  ghost: {
+    backgroundColor: 'transparent',
+    color: 'var(--text-3)',
+    border: '1px solid transparent',
+  },
+};
+
+const sizes: Record<Size, string> = {
+  sm: 'px-3 py-1.5 text-xs',
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-7 py-3.5 text-base',
+};
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
+  ({ className = '', variant = 'primary', size = 'md', style, ...props }, ref) => {
     return (
       <motion.button
-        className={buttonVariants({ variant, size, className })}
         ref={ref}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-opacity duration-150 ${sizes[size]} ${className}`}
+        style={{
+          fontFamily: 'var(--font-body)',
+          ...styles[variant],
+          ...style,
+        }}
+        whileHover={{ opacity: 0.85 }}
+        whileTap={{ scale: 0.97 }}
         {...props}
       />
     );
@@ -44,4 +54,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button';
 
-export { Button, buttonVariants };
+export { Button };

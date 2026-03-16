@@ -8,8 +8,9 @@ import { Product, ProductCategory } from "@/types/shop";
 import { useTracking, usePageView } from "@/hooks/useTracking";
 import { motion } from "framer-motion";
 
-const CATEGORIES: { label: string; value: ProductCategory | "all" }[] = [
+const CATEGORIES: { label: string; value: ProductCategory | "all" | "fullstack" }[] = [
   { label: "All", value: "all" },
+  { label: "Full-Stack Systems", value: "fullstack" as ProductCategory },
   { label: "Templates", value: "template" },
   { label: "SaaS Starters", value: "saas" },
   { label: "APIs & Systems", value: "api" },
@@ -20,7 +21,7 @@ export default function ShopPage() {
   usePageView();
   const { track } = useTracking();
   const [products, setProducts] = useState<Product[]>([]);
-  const [activeCategory, setActiveCategory] = useState<ProductCategory | "all">("all");
+  const [activeCategory, setActiveCategory] = useState<ProductCategory | "all" | "fullstack">("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

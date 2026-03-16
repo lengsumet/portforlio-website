@@ -7,8 +7,7 @@ import {
   SiReact, SiTypescript, SiSharp, SiPython,
   SiGo, SiPostgresql, SiDocker,
 } from "react-icons/si";
-import { FaAws, FaGithub, FaLinkedin, FaArrowRight, FaChevronDown } from "react-icons/fa";
-import { Button } from "@/components/ui/Button";
+import { FaAws, FaGithub, FaLinkedin, FaArrowRight } from "react-icons/fa";
 import CatWidget from "@/components/animations/CatWidget";
 
 /* ── static data ──────────────────────────────────── */
@@ -31,183 +30,205 @@ const featured = [
     title: "Insurance & Fintech Platform",
     description: "High-concurrency workflow engine for financial transaction lifecycle. Real-time third-party API integrations, policy management, and granular access control.",
     tags: [".NET Core 8", "C#", "React", "PostgreSQL", "Docker"],
-    accent: "from-emerald-500/10 to-transparent",
-    dot: "#10b981",
     external: false,
+    year: "2024",
   },
   {
     slug: "ecommerce-suite",
     href: process.env.NEXT_PUBLIC_STORE_URL || "http://localhost:3001",
     category: "Full-Stack / Live Demo",
     title: "E-Commerce Store",
-    description: "Full e-commerce platform with product catalog, cart, PromptPay QR checkout, coupon system, and admin dashboard with weekly/monthly/yearly sales reports + CSV export.",
+    description: "Full e-commerce platform with product catalog, cart, PromptPay QR checkout, coupon system, and admin dashboard with weekly/monthly/yearly sales reports.",
     tags: ["Next.js 15", "Prisma", "NextAuth", "Zustand", "Recharts"],
-    accent: "from-emerald-500/10 to-transparent",
-    dot: "#10b981",
     external: true,
+    year: "2025",
   },
 ];
 
-const stats = [
-  { value: "3+",  label: "Years experience" },
-  { value: "10+", label: "Projects shipped" },
-  { value: "15",  label: "Technologies" },
-];
-
-/* ── animation presets ───────────────────────────── */
+/* ── animation helpers ───────────────────────────── */
 const fadeUp = (delay = 0) => ({
-  initial:    { opacity: 0, y: 24 },
+  initial:    { opacity: 0, y: 20 },
   animate:    { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: "easeOut" as const, delay },
+  transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const, delay },
 });
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const } },
+};
 
 /* ── page ─────────────────────────────────────────── */
 export default function Home() {
   return (
-    <div className="relative">
+    <div style={{ color: "var(--text-1)" }}>
 
       {/* ══ HERO ══════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6">
+      <section className="relative min-h-[92vh] flex flex-col justify-end px-6 pb-16 md:px-12 md:pb-20 overflow-hidden">
 
-        {/* Background effects */}
-        <div className="pointer-events-none absolute inset-0">
-          {/* Aurora glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px]
-            bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.12),transparent_70%)]" />
-          {/* Dot grid */}
-          <div className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage: "radial-gradient(rgba(16,185,129,0.2) 1px, transparent 1px)",
-              backgroundSize: "32px 32px",
-              maskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black 40%, transparent)",
-            }} />
-        </div>
+        {/* Subtle noise texture overlay */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            backgroundSize: "200px 200px",
+          }}
+        />
 
-        {/* Content */}
-        <div className="relative z-10 text-center max-w-3xl w-full">
+        {/* Warm accent glow — bottom left, asymmetric */}
+        <div
+          className="pointer-events-none absolute bottom-0 left-0 w-[600px] h-[400px] opacity-[0.06]"
+          style={{
+            background: "radial-gradient(ellipse at bottom left, oklch(78% 0.14 75), transparent 70%)",
+          }}
+        />
 
-          {/* Available badge */}
-          <motion.div {...fadeUp(0)} className="mb-7 flex justify-center">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full
-              bg-green-500/8 border border-green-500/20 text-green-400 text-[11px] font-medium tracking-wide">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+        {/* Content — left-aligned, editorial */}
+        <div className="relative z-10 max-w-4xl">
+
+          {/* Status line */}
+          <motion.div {...fadeUp(0)} className="mb-8 flex items-center gap-3">
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ backgroundColor: "var(--green)", boxShadow: "0 0 6px var(--green)" }}
+            />
+            <span
+              className="text-xs tracking-[0.15em] uppercase"
+              style={{ color: "var(--text-3)", fontFamily: "var(--font-body)" }}
+            >
               Available for opportunities
             </span>
           </motion.div>
 
-          {/* Name */}
+          {/* Name — large display, Fraunces */}
           <motion.h1
-            {...fadeUp(0.08)}
-            className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-4 leading-none"
+            {...fadeUp(0.06)}
+            style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
+            className="mb-3 leading-[0.95]"
           >
-            Sumet Buarod
+            Sumet
+            <br />
+            <span style={{ color: "var(--text-2)", fontStyle: "italic" }}>Buarod</span>
           </motion.h1>
 
-          {/* Title */}
-          <motion.p {...fadeUp(0.15)} className="text-lg md:text-xl text-emerald-300 mb-6 font-medium">
+          {/* Role — tight, muted */}
+          <motion.p
+            {...fadeUp(0.12)}
+            className="text-base md:text-lg mb-6 max-w-md"
+            style={{ color: "var(--text-3)", fontFamily: "var(--font-body)", fontWeight: 300 }}
+          >
             Software Engineer — Distributed Systems &amp; Cloud-Native
           </motion.p>
 
           {/* Bio */}
-          <motion.p {...fadeUp(0.22)} className="text-gray-500 text-base leading-relaxed mb-10 max-w-xl mx-auto">
+          <motion.p
+            {...fadeUp(0.18)}
+            className="text-sm leading-relaxed mb-10 max-w-lg"
+            style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}
+          >
             Building scalable distributed systems and cloud-native architectures.
             Expert in C#, .NET Core, Python, Golang, and React/Next.js.
           </motion.p>
 
-          {/* CTAs + social */}
-          <motion.div {...fadeUp(0.3)} className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
-            <Link href="/showcase">
-              <Button variant="primary" size="lg">Explore My Work</Button>
+          {/* Actions row */}
+          <motion.div {...fadeUp(0.24)} className="flex flex-wrap items-center gap-4 mb-10">
+            <Link
+              href="/showcase"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+              style={{
+                backgroundColor: "var(--accent)",
+                color: "oklch(12% 0.012 250)",
+                fontFamily: "var(--font-body)",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = "0.88")}
+              onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+            >
+              Explore Work
+              <FaArrowRight size={11} />
             </Link>
-            <Link href="/shop">
-              <Button variant="secondary" size="lg">Shop Templates</Button>
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+              style={{
+                border: "1px solid var(--border-mid)",
+                color: "var(--text-2)",
+                fontFamily: "var(--font-body)",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.color = "var(--accent)"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border-mid)"; e.currentTarget.style.color = "var(--text-2)"; }}
+            >
+              Shop Templates
             </Link>
           </motion.div>
 
-          {/* Social links */}
-          <motion.div {...fadeUp(0.36)} className="flex items-center justify-center gap-4">
+          {/* Social + stats — inline, minimal */}
+          <motion.div {...fadeUp(0.3)} className="flex items-center gap-6">
             <a
               href="https://github.com"
               target="_blank"
               rel="noreferrer"
-              className="text-gray-600 hover:text-gray-300 transition-colors duration-200"
+              style={{ color: "var(--text-4)" }}
+              className="transition-colors duration-150 hover:text-[var(--text-2)]"
             >
-              <FaGithub size={18} />
+              <FaGithub size={16} />
             </a>
             <a
               href="https://linkedin.com"
               target="_blank"
               rel="noreferrer"
-              className="text-gray-600 hover:text-gray-300 transition-colors duration-200"
+              style={{ color: "var(--text-4)" }}
+              className="transition-colors duration-150 hover:text-[var(--text-2)]"
             >
-              <FaLinkedin size={18} />
+              <FaLinkedin size={16} />
             </a>
+            <span style={{ width: 1, height: 16, backgroundColor: "var(--border)", display: "inline-block" }} />
+            <span className="text-xs tabular" style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}>
+              3+ yrs · 10+ projects · 15 technologies
+            </span>
           </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gray-700"
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
-        >
-          <FaChevronDown size={13} />
-        </motion.div>
-      </section>
-
-      {/* ══ STATS ══════════════════════════════════════════ */}
-      <section className="border-y border-gray-900/80 py-10">
-        <div className="max-w-2xl mx-auto px-6 grid grid-cols-3 gap-4">
-          {stats.map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" }}
-              className="text-center"
-            >
-              <p className="text-3xl font-bold text-white tracking-tight">{s.value}</p>
-              <p className="text-xs text-gray-600 mt-1">{s.label}</p>
-            </motion.div>
-          ))}
         </div>
       </section>
 
       {/* ══ TECH STACK ══════════════════════════════════════ */}
-      <section className="py-20 px-6">
+      <section className="px-6 md:px-12 py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center text-[10px] uppercase tracking-[0.2em] text-gray-700 mb-8"
+          className="text-xs uppercase tracking-[0.18em] mb-8"
+          style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}
         >
           Tech Stack
         </motion.p>
         <motion.div
-          className="flex flex-wrap justify-center gap-2.5 max-w-2xl mx-auto"
+          className="flex flex-wrap gap-2"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-40px" }}
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
+          variants={stagger}
         >
           {tech.map((t) => {
             const Icon = t.icon;
             return (
               <motion.div
                 key={t.name}
-                variants={{
-                  hidden: { opacity: 0, scale: 0.85 },
-                  show:   { opacity: 1, scale: 1, transition: { duration: 0.35, ease: "easeOut" as const } },
+                variants={item}
+                whileHover={{ y: -1 }}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs cursor-default transition-colors duration-150"
+                style={{
+                  border: "1px solid var(--border)",
+                  color: "var(--text-3)",
+                  backgroundColor: "var(--bg-raised)",
+                  fontFamily: "var(--font-body)",
                 }}
-                whileHover={{ y: -2, scale: 1.04 }}
-                transition={{ duration: 0.15 }}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl
-                  bg-gray-900/50 border border-gray-800/40 hover:border-gray-700/60
-                  text-[12px] text-gray-500 hover:text-gray-300
-                  transition-colors duration-200 cursor-default"
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border-mid)"; (e.currentTarget as HTMLElement).style.color = "var(--text-2)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.color = "var(--text-3)"; }}
               >
-                <Icon size={13} style={{ color: t.color }} />
+                <Icon size={12} style={{ color: t.color, flexShrink: 0 }} />
                 {t.name}
               </motion.div>
             );
@@ -216,91 +237,123 @@ export default function Home() {
       </section>
 
       {/* ══ FEATURED WORK ════════════════════════════════════ */}
-      <section className="py-6 pb-24 px-6">
-        <div className="max-w-3xl mx-auto">
-          {/* Header row */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
+      <section className="px-6 md:px-12 pb-24" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="pt-16 flex items-baseline justify-between mb-10">
+          <motion.h2
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="flex items-center justify-between mb-8"
+            style={{ fontFamily: "var(--font-display)", fontWeight: 400, color: "var(--text-1)" }}
+            className="text-2xl"
           >
-            <h2 className="text-lg font-semibold text-white">Featured Work</h2>
-            <Link
-              href="/showcase"
-              className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-emerald-400 transition-colors duration-200 group"
+            Selected Work
+          </motion.h2>
+          <Link
+            href="/showcase"
+            className="flex items-center gap-1.5 text-xs transition-colors duration-150"
+            style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "var(--accent)")}
+            onMouseLeave={e => (e.currentTarget.style.color = "var(--text-4)")}
+          >
+            All work
+            <FaArrowRight size={9} />
+          </Link>
+        </div>
+
+        {/* Work list — editorial list style, not identical cards */}
+        <div className="space-y-0">
+          {featured.map((item, i) => (
+            <motion.div
+              key={item.slug}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
             >
-              View all
-              <FaArrowRight size={10} className="group-hover:translate-x-0.5 transition-transform duration-150" />
-            </Link>
-          </motion.div>
-
-          {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {featured.map((item, i) => (
-              <motion.div
-                key={item.slug}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
+              <a
+                href={item.href}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noreferrer" : undefined}
+                className="group block py-8 transition-all duration-200"
+                style={{ borderBottom: "1px solid var(--border)" }}
               >
-                <a href={item.href} target={item.external ? "_blank" : undefined} rel={item.external ? "noreferrer" : undefined} className="block group">
-                  <div className="relative overflow-hidden rounded-2xl border border-gray-800/40
-                    bg-gray-900/40 hover:border-gray-700/50 hover:bg-gray-900/60
-                    hover:-translate-y-1 transition-all duration-300 p-6 h-full">
-
-                    {/* Accent gradient */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${item.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-400`} />
-
-                    {/* Dot + category */}
-                    <div className="flex items-center gap-2 mb-4 relative">
-                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: item.dot }} />
-                      <span className="text-[10px] uppercase tracking-widest text-gray-600">{item.category}</span>
+                <div className="flex items-start justify-between gap-6">
+                  {/* Left: meta + title + desc */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span
+                        className="text-[10px] uppercase tracking-[0.15em]"
+                        style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}
+                      >
+                        {item.category}
+                      </span>
+                      {item.external && (
+                        <span
+                          className="text-[9px] px-1.5 py-0.5 rounded font-medium uppercase tracking-wide"
+                          style={{ backgroundColor: "var(--green-bg)", color: "var(--green)" }}
+                        >
+                          Live
+                        </span>
+                      )}
                     </div>
-
-                    {/* Title */}
-                    <h3 className="text-sm font-semibold text-white mb-2 relative
-                      group-hover:text-emerald-300 transition-colors duration-200">
+                    <h3
+                      className="text-lg mb-2 transition-colors duration-150"
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontWeight: 400,
+                        color: "var(--text-1)",
+                      }}
+                    >
                       {item.title}
                     </h3>
-
-                    {/* Description */}
-                    <p className="text-[12px] text-gray-600 leading-relaxed mb-5 relative line-clamp-3">
+                    <p
+                      className="text-sm leading-relaxed mb-4 max-w-xl"
+                      style={{ color: "var(--text-3)", fontFamily: "var(--font-body)" }}
+                    >
                       {item.description}
                     </p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1.5 relative">
+                    <div className="flex flex-wrap gap-1.5">
                       {item.tags.map((tag) => (
-                        <span key={tag}
-                          className="text-[10px] px-2 py-0.5 rounded-md bg-gray-800/60 text-gray-600">
+                        <span
+                          key={tag}
+                          className="text-[10px] px-2 py-0.5 rounded"
+                          style={{
+                            backgroundColor: "var(--bg-float)",
+                            color: "var(--text-4)",
+                            fontFamily: "var(--font-body)",
+                          }}
+                        >
                           {tag}
                         </span>
                       ))}
                     </div>
-
-                    {/* Arrow / External badge */}
-                    <div className="absolute bottom-5 right-5 flex items-center gap-1.5">
-                      {item.external && (
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-medium">LIVE</span>
-                      )}
-                      <span className="text-gray-700 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all duration-200">
-                        <FaArrowRight size={11} />
-                      </span>
-                    </div>
                   </div>
-                </a>
-              </motion.div>
-            ))}
-          </div>
+
+                  {/* Right: year + arrow */}
+                  <div className="flex flex-col items-end gap-3 flex-shrink-0 pt-1">
+                    <span
+                      className="text-xs tabular"
+                      style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}
+                    >
+                      {item.year}
+                    </span>
+                    <span
+                      className="transition-all duration-200 group-hover:translate-x-1"
+                      style={{ color: "var(--text-4)" }}
+                    >
+                      <FaArrowRight size={12} />
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* ══ CAT WIDGET ══════════════════════════════════ */}
       <CatWidget />
-
     </div>
   );
 }

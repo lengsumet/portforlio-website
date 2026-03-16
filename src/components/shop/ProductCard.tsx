@@ -16,14 +16,27 @@ const categoryColors: Record<string, string> = {
   service: "bg-blue-500/20 text-blue-300",
   saas: "bg-green-500/20 text-green-300",
   api: "bg-orange-500/20 text-orange-300",
+  fullstack: "bg-emerald-500/20 text-emerald-300",
+};
+
+const categoryEmoji: Record<string, string> = {
+  template: "🎨",
+  service: "⚙️",
+  saas: "🚀",
+  api: "🔌",
+  fullstack: "🏗️",
+};
+
+const categoryLabel: Record<string, string> = {
+  template: "Template",
+  service: "Service",
+  saas: "SaaS",
+  api: "API",
+  fullstack: "Full-Stack System",
 };
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onTrack }) => {
-  const priceFormatted = new Intl.NumberFormat("th-TH", {
-    style: "currency",
-    currency: "THB",
-    minimumFractionDigits: 0,
-  }).format(product.price);
+  const priceFormatted = `${new Intl.NumberFormat("th-TH").format(product.price)} บาท`;
 
   return (
     <motion.div
@@ -36,18 +49,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onTrack }) =>
       <div className="relative h-48 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10" />
         <div className="text-6xl opacity-20 select-none">
-          {product.category === "template" && "🎨"}
-          {product.category === "service" && "⚙️"}
-          {product.category === "saas" && "🚀"}
-          {product.category === "api" && "🔌"}
+          {categoryEmoji[product.category] ?? "📦"}
         </div>
         {product.featured && (
           <span className="absolute top-3 right-3 bg-accent/90 text-black text-xs font-bold px-2 py-1 rounded-full">
             Featured
           </span>
         )}
-        <span className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${categoryColors[product.category]}`}>
-          {product.category}
+        <span className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${categoryColors[product.category] ?? "bg-gray-500/20 text-gray-300"}`}>
+          {categoryLabel[product.category] ?? product.category}
         </span>
       </div>
 

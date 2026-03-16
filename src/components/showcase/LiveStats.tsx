@@ -202,24 +202,14 @@ const dashStatItems: { key: keyof DashStats; label: string; icon: string }[] = [
 // ==========================================
 
 const SYSTEM_CONFIG = {
-  wms: { url: WMS_URL, label: "WMS", accent: "indigo", port: "3001", items: wmsStatItems },
-  pos: { url: POS_URL, label: "POS", accent: "emerald", port: "3002", items: posStatItems },
-  crm: { url: CRM_URL, label: "CRM", accent: "amber", port: "3003", items: crmStatItems },
-  tms: { url: TMS_URL, label: "TMS", accent: "teal", port: "3004", items: tmsStatItems },
-  ims: { url: IMS_URL, label: "IMS", accent: "cyan", port: "3005", items: imsStatItems },
-  scms: { url: SCMS_URL, label: "SCMS", accent: "indigo", port: "3006", items: scmsStatItems },
-  pms: { url: PMS_URL, label: "PMS", accent: "orange", port: "3007", items: pmsStatItems },
-  dashboard: { url: DASH_URL, label: "Dashboard", accent: "blue", port: "3008", items: dashStatItems },
-};
-
-const accentColorMap: Record<string, string> = {
-  indigo: "bg-indigo-400",
-  emerald: "bg-emerald-400",
-  amber: "bg-amber-400",
-  teal: "bg-teal-400",
-  cyan: "bg-cyan-400",
-  orange: "bg-orange-400",
-  blue: "bg-blue-400",
+  wms: { url: WMS_URL, label: "WMS", port: "3001", items: wmsStatItems },
+  pos: { url: POS_URL, label: "POS", port: "3002", items: posStatItems },
+  crm: { url: CRM_URL, label: "CRM", port: "3003", items: crmStatItems },
+  tms: { url: TMS_URL, label: "TMS", port: "3004", items: tmsStatItems },
+  ims: { url: IMS_URL, label: "IMS", port: "3005", items: imsStatItems },
+  scms: { url: SCMS_URL, label: "SCMS", port: "3006", items: scmsStatItems },
+  pms: { url: PMS_URL, label: "PMS", port: "3007", items: pmsStatItems },
+  dashboard: { url: DASH_URL, label: "Dashboard", port: "3008", items: dashStatItems },
 };
 
 // ==========================================
@@ -232,7 +222,7 @@ interface LiveStatsProps {
 
 export default function LiveStats({ system = "wms" }: LiveStatsProps) {
   const config = SYSTEM_CONFIG[system];
-  const { url: apiUrl, label: systemLabel, accent: accentColor, port, items: statItems } = config;
+  const { url: apiUrl, label: systemLabel, port, items: statItems } = config;
 
   const [stats, setStats] = useState<WmsStats | PosStats | CrmStats | TmsStats | ImsStats | ScmsStats | PmsStats | DashStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -258,27 +248,25 @@ export default function LiveStats({ system = "wms" }: LiveStatsProps) {
     fetchStats();
     const interval = setInterval(fetchStats, 30000);
     return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const gridCols = "grid-cols-3";
 
   if (loading) {
     return (
-      <div className="bg-gray-800/40 rounded-xl p-6 my-6">
+      <div className="rounded-xl p-5 my-5" style={{ backgroundColor: "var(--bg-float)", border: "1px solid var(--border)" }}>
         <div className="flex items-center gap-2 mb-4">
-          <div className="h-2 w-2 rounded-full bg-yellow-400 animate-pulse" />
-          <span className="text-sm text-gray-400">
+          <div className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ backgroundColor: "var(--accent)" }} />
+          <span className="text-xs" style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}>
             Connecting to {systemLabel}...
           </span>
         </div>
-        <div className={`grid ${gridCols} gap-3`}>
+        <div className={`grid ${gridCols} gap-2`}>
           {Array.from({ length: statItems.length }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-gray-700/40 rounded-lg p-3 animate-pulse"
-            >
-              <div className="h-3 bg-gray-600 rounded w-16 mb-2" />
-              <div className="h-5 bg-gray-600 rounded w-10" />
+            <div key={i} className="rounded-lg p-3 animate-pulse" style={{ backgroundColor: "var(--bg-raised)" }}>
+              <div className="h-2 rounded w-14 mb-2" style={{ backgroundColor: "var(--border-mid)" }} />
+              <div className="h-4 rounded w-8" style={{ backgroundColor: "var(--border-mid)" }} />
             </div>
           ))}
         </div>
@@ -288,68 +276,62 @@ export default function LiveStats({ system = "wms" }: LiveStatsProps) {
 
   if (offline) {
     return (
-      <div className="bg-gray-800/40 border border-gray-700/50 rounded-xl p-6 my-6">
+      <div className="rounded-xl p-5 my-5" style={{ backgroundColor: "var(--bg-float)", border: "1px solid var(--border)" }}>
         <div className="flex items-center gap-2 mb-2">
-          <div className="h-2 w-2 rounded-full bg-red-400" />
-          <span className="text-sm font-medium text-gray-300">
+          <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: "var(--red)" }} />
+          <span className="text-xs font-medium" style={{ color: "var(--text-3)", fontFamily: "var(--font-body)" }}>
             {systemLabel} Offline
           </span>
         </div>
-        <p className="text-sm text-gray-500">
-          The {systemLabel} system is currently offline. Start the {systemLabel}{" "}
-          server on port {port} to see live statistics.
+        <p className="text-xs" style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}>
+          Start the {systemLabel} server on port {port} to see live statistics.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-800/40 border border-gray-700/50 rounded-xl p-6 my-6">
+    <div className="rounded-xl p-5 my-5" style={{ backgroundColor: "var(--bg-float)", border: "1px solid var(--border)" }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div
-            className={`h-2 w-2 rounded-full animate-pulse ${
-              accentColorMap[accentColor] || "bg-green-400"
-            }`}
-          />
-          <span className="text-sm font-medium text-gray-300">
+          <div className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ backgroundColor: "var(--green)" }} />
+          <span className="text-xs font-medium" style={{ color: "var(--text-3)", fontFamily: "var(--font-body)" }}>
             Live {systemLabel} Statistics
           </span>
         </div>
-        <span className="text-xs text-gray-500">
+        <span className="text-[10px]" style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}>
           {system === "wms" && (stats as WmsStats)?.systemStatus === "operational"
-            ? "System Operational"
-            : system !== "wms"
-              ? "System Online"
-              : ""}
+            ? "Operational"
+            : system !== "wms" ? "Online" : ""}
         </span>
       </div>
-      <div className={`grid ${gridCols} gap-3`}>
-        {(statItems as { key: string; label: string; icon: string }[]).map(
-          ({ key, label, icon }) => {
-            const value = (stats as unknown as Record<string, unknown>)?.[key];
-            const displayValue =
-              typeof value === "number"
-                ? key === "todaySales" || key === "pipelineValue"
-                  ? `฿${value.toLocaleString()}`
-                  : key === "onTimeRate"
-                    ? `${value}%`
-                    : value.toLocaleString()
-                : "0";
-            return (
-              <div
-                key={key}
-                className="bg-gray-700/30 rounded-lg p-3 hover:bg-gray-700/50 transition-colors"
-              >
-                <div className="flex items-center gap-1.5 mb-1">
-                  <span className="text-sm">{icon}</span>
-                  <span className="text-xs text-gray-400">{label}</span>
-                </div>
-                <p className="text-lg font-bold text-white">{displayValue}</p>
+      <div className={`grid ${gridCols} gap-2`}>
+        {(statItems as { key: string; label: string; icon: string }[]).map(({ key, label, icon }) => {
+          const value = (stats as unknown as Record<string, unknown>)?.[key];
+          const displayValue =
+            typeof value === "number"
+              ? key === "todaySales" || key === "pipelineValue"
+                ? `฿${value.toLocaleString()}`
+                : key === "onTimeRate"
+                  ? `${value}%`
+                  : value.toLocaleString()
+              : "0";
+          return (
+            <div
+              key={key}
+              className="rounded-lg p-3 transition-colors duration-150"
+              style={{ backgroundColor: "var(--bg-raised)", border: "1px solid var(--border)" }}
+            >
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="text-xs">{icon}</span>
+                <span className="text-[10px]" style={{ color: "var(--text-4)", fontFamily: "var(--font-body)" }}>{label}</span>
               </div>
-            );
-          }
-        )}
+              <p className="text-sm font-medium tabular" style={{ color: "var(--text-1)", fontFamily: "var(--font-body)" }}>
+                {displayValue}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
